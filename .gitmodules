@@ -1,0 +1,4 @@
+[submodule "platform-common"]
+	path = platform-common
+	url = https://github.com/TaviscaSolutions/platform-common.git
+	branch = nuget-integration
