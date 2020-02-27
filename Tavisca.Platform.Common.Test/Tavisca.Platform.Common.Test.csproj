@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -10,6 +10,29 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Aerospike\Tavisca.Common.Plugins.Aerospike.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Aws\Tavisca.Common.Plugins.Aws.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.BinarySerializer\Tavisca.Common.Plugins.BinarySerializer.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Cassandra\Tavisca.Common.Plugins.Cassandra.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Configuration\Tavisca.Common.Plugins.Configuration.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Cryptography\Tavisca.Common.Plugins.Cryptography.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Crypto\Tavisca.Common.Plugins.Crypto.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.ExchangeRate\Tavisca.Common.Plugins.ExchangeRate.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.JsonSerializer\Tavisca.Common.Plugins.JsonSerializer.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.RabbitMq\Tavisca.Common.Plugins.RabbitMq.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.RecyclableStreamPool\Tavisca.Common.Plugins.RecyclableStreamPool.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.Redis\Tavisca.Common.Plugins.Redis.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.ServiceCaller\Tavisca.Common.Plugins.ServiceCaller.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.SessionStore\Tavisca.Common.Plugins.SessionStore.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.StatsD\Tavisca.Common.Plugins.StatsD.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.StructureMap\Tavisca.Common.Plugins.StructureMap.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Common.Plugins.WebClient\Tavisca.Common.Plugins.WebClient.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Platform.Common.Models\Tavisca.Platform.Common.Models.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Platform.Common.Plugins.Json\Tavisca.Platform.Common.Plugins.Json.Core.csproj" />
+    <ProjectReference Include="..\platform-common\Tavisca.Platform.Common\Tavisca.Platform.Common.Core.csproj" />
   </ItemGroup>
 
 </Project>
