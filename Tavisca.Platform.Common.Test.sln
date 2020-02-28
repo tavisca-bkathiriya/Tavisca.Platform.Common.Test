@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Platform.Common.Test", "Tavisca.Platform.Common.Test\Tavisca.Platform.Common.Test.csproj", "{2D8BB230-D6CD-42F5-9F16-EB18702C3E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Platform.Common.Tasks.Test", "Tavisca.Platform.Common.Test\Tavisca.Platform.Common.Tasks.Test.csproj", "{2D8BB230-D6CD-42F5-9F16-EB18702C3E6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform Common", "Platform Common", "{62AC6EF2-AEAC-494B-9318-B32B8E1ABBF7}"
 EndProject
@@ -46,6 +46,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Platform.Common.Models.Core", "platform-common\Tavisca.Platform.Common.Models\Tavisca.Platform.Common.Models.Core.csproj", "{23F4D6E1-8673-4C1D-AF7F-7EAE277CE846}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Platform.Common.Plugins.Json.Core", "platform-common\Tavisca.Platform.Common.Plugins.Json\Tavisca.Platform.Common.Plugins.Json.Core.csproj", "{57876DDE-FEF8-4573-9587-B47B50011FDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Platform.Common.LockManagement.Tests", "Tavisca.Platform.Common.LockManagement.Tests\Tavisca.Platform.Common.LockManagement.Tests.csproj", "{B39A84BC-5426-449F-A97D-11BF0488CD51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Platform.Common.Logging.Tests", "Tavisca.Platform.Common.Logging.Tests\Tavisca.Platform.Common.Logging.Tests.csproj", "{CA83983B-1F87-49D1-9A90-0E80B157F0A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +141,14 @@ Global
 		{57876DDE-FEF8-4573-9587-B47B50011FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57876DDE-FEF8-4573-9587-B47B50011FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57876DDE-FEF8-4573-9587-B47B50011FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B39A84BC-5426-449F-A97D-11BF0488CD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B39A84BC-5426-449F-A97D-11BF0488CD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B39A84BC-5426-449F-A97D-11BF0488CD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B39A84BC-5426-449F-A97D-11BF0488CD51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
