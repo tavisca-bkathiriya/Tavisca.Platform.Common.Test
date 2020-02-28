@@ -51,6 +51,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Platform.Common.Loc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Platform.Common.Logging.Tests", "Tavisca.Platform.Common.Logging.Tests\Tavisca.Platform.Common.Logging.Tests.csproj", "{CA83983B-1F87-49D1-9A90-0E80B157F0A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Platform.Common.Logging.Tests.Web", "Tavisca.Platform.Common.Logging.Tests.Web\Tavisca.Platform.Common.Logging.Tests.Web.csproj", "{5CDDA49B-97B0-4072-A99A-6921F45C4628}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Platform.Common.WebApi.Core", "platform-common\Tavisca.Platform.Common.WebApi\Tavisca.Platform.Common.WebApi.Core.csproj", "{29CDC340-282F-4B19-A465-BF0D2A7E1017}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +153,14 @@ Global
 		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA83983B-1F87-49D1-9A90-0E80B157F0A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CDDA49B-97B0-4072-A99A-6921F45C4628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CDDA49B-97B0-4072-A99A-6921F45C4628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CDDA49B-97B0-4072-A99A-6921F45C4628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CDDA49B-97B0-4072-A99A-6921F45C4628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29CDC340-282F-4B19-A465-BF0D2A7E1017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29CDC340-282F-4B19-A465-BF0D2A7E1017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29CDC340-282F-4B19-A465-BF0D2A7E1017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29CDC340-282F-4B19-A465-BF0D2A7E1017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +186,7 @@ Global
 		{27D69229-5A1F-40F9-8382-3FC8D6A109A6} = {62AC6EF2-AEAC-494B-9318-B32B8E1ABBF7}
 		{23F4D6E1-8673-4C1D-AF7F-7EAE277CE846} = {62AC6EF2-AEAC-494B-9318-B32B8E1ABBF7}
 		{57876DDE-FEF8-4573-9587-B47B50011FDC} = {62AC6EF2-AEAC-494B-9318-B32B8E1ABBF7}
+		{29CDC340-282F-4B19-A465-BF0D2A7E1017} = {62AC6EF2-AEAC-494B-9318-B32B8E1ABBF7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F553D406-E999-43F9-BC50-4503E850742C}
