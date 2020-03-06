@@ -33,6 +33,34 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
         }
 
         [Fact]
+        public void Should_Not_Log_Api_Log()
+        {
+            var id = Convert.ToString(Guid.NewGuid());
+            var apiLog = Utility.GetApiLog();
+            apiLog.Id = id;
+
+            ILogFormatter formatter = JsonLogFormatter.Instance;
+
+            var configProvider = new Tavisca.Common.Plugins.Configuration.ConfigurationProvider("test_new_app");
+            var redisSink = Utility.GetLoggingDisabledRedisSink(configProvider);
+
+            var logWriter = new LogWriter(formatter, redisSink, configurationProvider: configProvider);
+            logWriter.WriteAsync(apiLog).GetAwaiter().GetResult();
+            Thread.Sleep(40000);
+
+            Assert.Throws<Exception>(() => Utility.GetEsLogDataById(id));
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentNullException_When_RedisSetting_Is_Null()
+        {
+            var id = Convert.ToString(Guid.NewGuid());
+            var apiLog = Utility.GetApiLog();
+            apiLog.Id = id;
+            Assert.Throws<ArgumentNullException>(() => Utility.GetRedisSinkWithNullSettings());
+        }
+
+        [Fact]
         public void Should_Log_Trace_Log()
         {
             var id = Convert.ToString(Guid.NewGuid());
@@ -50,7 +78,48 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
             logData.TryGetValue("id", out esLogId);
             Assert.Equal(id, esLogId);
         }
+        [Fact]
+        public void Should_Log_Exception_Log()
+        {
+            try
+            {
+                throw new ArgumentNullException();
+            }
+            catch (Exception exception)
+            {
+                var id = Convert.ToString(Guid.NewGuid());
+                var apiLog = Utility.GetApiLog();
+                apiLog.Id = id;
+                var exceptionLog = GetErrorEntry(exception, apiLog);
+                ILogFormatter formatter = JsonLogFormatter.Instance;
+                var redisSink = Utility.GetRedisSink();
+                var logWriter = new LogWriter(formatter, redisSink);
+                logWriter.WriteAsync(exceptionLog).GetAwaiter().GetResult();
 
+                Thread.Sleep(40000);
+
+                var logData = Utility.GetEsLogDataById(id);
+                var esLogId = string.Empty;
+                logData.TryGetValue("id", out esLogId);
+                Assert.Equal(id, esLogId);
+            }
+        }
+
+        private ExceptionLog GetErrorEntry(Exception exception, ILog log)
+        {
+            var exceptionLog = new ExceptionLog(exception);
+
+            var baseLog = log as LogBase;
+            if (baseLog == null)
+            {
+                return exceptionLog;
+            }
+
+            exceptionLog.AppDomain = baseLog.AppDomain;
+            exceptionLog.ApplicationName = baseLog.ApplicationName;
+            exceptionLog.Id = baseLog.Id;
+            return exceptionLog;
+        }
         [Fact]
         public void Should_Add_Ip_Prefix()
         {

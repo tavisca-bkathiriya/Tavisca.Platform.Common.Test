@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Tavisca.Common.Plugins.Aws;
+using Tavisca.Common.Plugins.Configuration;
 using Tavisca.Common.Plugins.Redis;
+using Tavisca.Libraries.Logging.Sink.Redis;
+using Tavisca.Platform.Common;
+using Tavisca.Platform.Common.ExceptionManagement;
 using Tavisca.Platform.Common.Logging;
 
 namespace Tavisca.Libraries.Logging.Tests.Utilities
@@ -37,6 +41,7 @@ namespace Tavisca.Libraries.Logging.Tests.Utilities
             return ip;
         }
 
+
         public static IDictionary<string, string> CreateMapWithValue(string mapKey, string mapValue)
         {
             IDictionary<string, string> map = new Dictionary<string, string>();
@@ -60,48 +65,72 @@ namespace Tavisca.Libraries.Logging.Tests.Utilities
             return payload;
         }
 
+        public class ErrorHandler : IErrorHandler
+        {
+            public bool HandleException(Exception ex, string policy, out Exception newException)
+            {
+                newException = ex;
+                return true;
+            }
+        }
+
         public static RedisSink GetRedisSink()
         {
-            var redisLogSettings = new RedisLogSettings
-            {
-                ApiSetting = new RedisSetting
-                {
-                    Hosts = new List<RedisHost> {
-                        new RedisHost
-                        {
-                            Url = "master.travel-qa-logging.l86run.use1.cache.amazonaws.com",
-                            Port = "6379",
-                            IsSslEnabled = true
-                        }
-                    },
-                    QueueName = "travel-qa-logging-api"
-                },
-                ExceptionSetting = new RedisSetting
-                {
-                    Hosts = new List<RedisHost> {
-                        new RedisHost
-                        {
-                            Url = "master.travel-qa-logging.l86run.use1.cache.amazonaws.com",
-                            Port = "6379",
-                            IsSslEnabled = true
-                        }
-                    },
-                    QueueName = "travel-qa-logging-exception"
-                },
-                TraceSetting = new RedisSetting
-                {
-                    Hosts = new List<RedisHost> {
-                        new RedisHost
-                        {
-                            Url = "master.travel-qa-logging.l86run.use1.cache.amazonaws.com",
-                            Port = "6379",
-                            IsSslEnabled = true
-                        }
-                    },
-                    QueueName = "travel-qa-logging-trace"
-                }
-            };
+            //var redisLogSettings = new RedisLogSettings
+            //{
+            //    ApiSetting = new RedisSetting
+            //    {
+            //        Hosts = new List<RedisHost> {
+            //            new RedisHost
+            //            {
+            //                Url = "master.travel-qa-logging.l86run.use1.cache.amazonaws.com",
+            //                Port = "6379",
+            //                IsSslEnabled = true
+            //            }
+            //        },
+            //        QueueName = "travel-qa-logging-api"
+            //    },
+            //    ExceptionSetting = new RedisSetting
+            //    {
+            //        Hosts = new List<RedisHost> {
+            //            new RedisHost
+            //            {
+            //                Url = "master.travel-qa-logging.l86run.use1.cache.amazonaws.com",
+            //                Port = "6379",
+            //                IsSslEnabled = true
+            //            }
+            //        },
+            //        QueueName = "travel-qa-logging-exception"
+            //    },
+            //    TraceSetting = new RedisSetting
+            //    {
+            //        Hosts = new List<RedisHost> {
+            //            new RedisHost
+            //            {
+            //                Url = "master.travel-qa-logging.l86run.use1.cache.amazonaws.com",
+            //                Port = "6379",
+            //                IsSslEnabled = true
+            //            }
+            //        },
+            //        QueueName = "travel-qa-logging-trace"
+            //    }
+            //};
 
+            var configProvider = new ConfigurationProvider("hotel_content_service");
+            var redisLogSettings = new RedisLogSettingsProvider(configProvider);
+
+            return new RedisSink(redisLogSettings);
+        }
+
+        public static RedisSink GetLoggingDisabledRedisSink(Common.Plugins.Configuration.ConfigurationProvider configProvider)
+        {
+            var redisLogSettings = new RedisLogSettingsProvider(configProvider);
+            return new RedisSink(redisLogSettings);
+        }
+
+        public static RedisSink GetRedisSinkWithNullSettings()
+        {
+            RedisLogSettings redisLogSettings = null;
             return new RedisSink(redisLogSettings);
         }
 
@@ -117,7 +146,9 @@ namespace Tavisca.Libraries.Logging.Tests.Utilities
 
         public static FirehoseSink GetFirehoseSink()
         {
-            IFirehoseLogSettingsProvider firehoseLogSettingsProvider = new StaticFireHoseSettingsProvider();
+            //IFirehoseLogSettingsProvider firehoseLogSettingsProvider = new StaticFireHoseSettingsProvider();
+            var configProvider = new ConfigurationProvider("hotel_content_service");
+            var firehoseLogSettingsProvider = new FirehoseSettingsProvider(configProvider);
             var firehoseSink = new FirehoseSink(firehoseLogSettingsProvider);
             return firehoseSink;
         }
