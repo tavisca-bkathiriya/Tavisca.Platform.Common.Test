@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +10,15 @@ namespace Tavisca.Libraries.Tasks.Tests
 {
     public class TaskPoolTest
     {
+       
+
         [Fact]
         public void TaskPool_Should_Create_and_Enqueue_Actions_in_Thread()
         {
             var threadIds = new List<int>();
             var lockObject = new object();
             var waitHandle = new CountdownEvent(10);
-
+            
             TaskPool taskPool = new TaskPool(3);
             taskPool.Enqueue(() => getTask(lockObject, waitHandle, threadIds));
             taskPool.Enqueue(() => getTask(lockObject, waitHandle, threadIds));

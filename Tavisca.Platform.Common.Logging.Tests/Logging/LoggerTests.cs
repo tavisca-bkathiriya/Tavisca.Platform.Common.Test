@@ -18,20 +18,18 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
             var apiLog = Utility.GetApiLog();
             apiLog.Id = id;
 
-            var formatter = JsonLogFormatter.Instance;
-            var firehoseSink = Utility.GetFirehoseSink();
+            ILogFormatter formatter = JsonLogFormatter.Instance;
             var redisSink = Utility.GetRedisSink();
-            var compositeSink = Utility.GetCompositeSink(formatter, redisSink, firehoseSink);
 
-            IApplicationLogWriter applicationLogWriter = new LogWriter(formatter, compositeSink);
+            IApplicationLogWriter applicationLogWriter = new LogWriter(formatter, redisSink);
             Logger.Initialize(applicationLogWriter);
             Logger.WriteLogAsync(apiLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            //Thread.Sleep(40000);
 
             var logData = Utility.GetEsLogDataById(id);
             var esLogId = string.Empty;
             logData.TryGetValue("id", out esLogId);
-            Assert.Equal(id, esLogId); //TODO: Manually verify logs using primary firehose sink (Use valid firehose credentials) 
+            Assert.Equal(id, esLogId); 
         }
     }
 }

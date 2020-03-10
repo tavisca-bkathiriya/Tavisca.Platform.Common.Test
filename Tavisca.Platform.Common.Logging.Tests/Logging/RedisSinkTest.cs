@@ -2,19 +2,32 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Tavisca.Common.Plugins.Redis;
 using Tavisca.Platform.Common.Logging;
 using Tavisca.Platform.Common.Plugins.Json;
 using Tavisca.Libraries.Logging.Tests.Utilities;
 using Xunit;
 using System.Net;
+using Tavisca.Platform.Common.ExceptionManagement;
+using Tavisca.Platform.Common;
 
 namespace Tavisca.Libraries.Logging.Tests.Logging
 {
     public class RedisSinkTest
     {
+        public class ErrorHandler : IErrorHandler
+        {
+            public bool HandleException(Exception ex, string policy, out Exception newException)
+            {
+                newException = ex;
+                return true;
+            }
+        }
+
         [Fact]
         public void Should_Log_Api_Log()
         {
+            ExceptionPolicy.Configure(new ErrorHandler());
             var id = Convert.ToString(Guid.NewGuid());
             var apiLog = Utility.GetApiLog();
             apiLog.Id = id;
@@ -24,29 +37,34 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
 
             var logWriter = new LogWriter(formatter, redisSink);
             logWriter.WriteAsync(apiLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            ////Thread.Sleep(40000);
 
             var logData = Utility.GetEsLogDataById(id);
             var esLogId = string.Empty;
             logData.TryGetValue("id", out esLogId);
-            Assert.Equal(id, esLogId);
+            Assert.Equal(id, esLogId);            
         }
 
         [Fact]
         public void Should_Not_Log_Api_Log()
         {
+            ExceptionPolicy.Configure(new ErrorHandler());
             var id = Convert.ToString(Guid.NewGuid());
             var apiLog = Utility.GetApiLog();
             apiLog.Id = id;
 
             ILogFormatter formatter = JsonLogFormatter.Instance;
 
-            var configProvider = new Tavisca.Common.Plugins.Configuration.ConfigurationProvider("test_new_app");
+            Tavisca.Common.Plugins.Configuration.ConfigurationProvider configProvider;
+            lock (Utility._lock)
+            {
+                configProvider = new Tavisca.Common.Plugins.Configuration.ConfigurationProvider("test_new_app");
+            }
             var redisSink = Utility.GetLoggingDisabledRedisSink(configProvider);
 
             var logWriter = new LogWriter(formatter, redisSink, configurationProvider: configProvider);
             logWriter.WriteAsync(apiLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            //Thread.Sleep(40000);
 
             Assert.Throws<Exception>(() => Utility.GetEsLogDataById(id));
         }
@@ -54,6 +72,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
         [Fact]
         public void Should_Throw_ArgumentNullException_When_RedisSetting_Is_Null()
         {
+            ExceptionPolicy.Configure(new ErrorHandler());
             var id = Convert.ToString(Guid.NewGuid());
             var apiLog = Utility.GetApiLog();
             apiLog.Id = id;
@@ -71,13 +90,14 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
 
             var logWriter = new LogWriter(formatter, redisSink);
             logWriter.WriteAsync(traceLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            //Thread.Sleep(40000);
 
             var logData = Utility.GetEsLogDataById(id);
             var esLogId = string.Empty;
             logData.TryGetValue("id", out esLogId);
             Assert.Equal(id, esLogId);
         }
+
         [Fact]
         public void Should_Log_Exception_Log()
         {
@@ -96,7 +116,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
                 var logWriter = new LogWriter(formatter, redisSink);
                 logWriter.WriteAsync(exceptionLog).GetAwaiter().GetResult();
 
-                Thread.Sleep(40000);
+                //Thread.Sleep(40000);
 
                 var logData = Utility.GetEsLogDataById(id);
                 var esLogId = string.Empty;
@@ -120,6 +140,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
             exceptionLog.Id = baseLog.Id;
             return exceptionLog;
         }
+
         [Fact]
         public void Should_Add_Ip_Prefix()
         {
@@ -131,7 +152,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
 
             var logWriter = new LogWriter(formatter, redisSink);
             logWriter.WriteAsync(apiLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            //Thread.Sleep(40000);
 
             var logData = Utility.GetEsLogDataById(id);
             string esLogId;
@@ -150,7 +171,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
 
             var logWriter = new LogWriter(formatter, redisSink);
             logWriter.WriteAsync(apiLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            //Thread.Sleep(40000);
 
             var logData = Utility.GetEsLogDataById(id);
             string esLogId;
@@ -203,7 +224,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
             Payload payloadValue = Utility.CreatePayload();
             apiLog.SetValue("payloadType", payloadValue);
 
-            IDictionary<string, string> dictionaryvalue = new Dictionary<string, string> { { "hi", "hello" } };
+            IDictionary<string, string> dictionaryvalue = new Dictionary<string, string> { {"hi", "hello" } };
             apiLog.SetValue("dictionaryType", dictionaryvalue);
 
             Map mapvalue = new Map(dictionaryvalue, MapFormat.Json);
@@ -217,7 +238,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
 
             var logWriter = new LogWriter(formatter, redisSink);
             logWriter.WriteAsync(apiLog).GetAwaiter().GetResult();
-            Thread.Sleep(40000);
+            //Thread.Sleep(40000);
 
             var logData = Utility.GetEsLogDataById(id);
 
