@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Tavisca.Libraries.Logging.Tests.Utilities
 {
@@ -22,42 +23,54 @@ namespace Tavisca.Libraries.Logging.Tests.Utilities
             _esClient = new ElasticClient(settings);
         }
 
-        public Dictionary<string, string> GetLog(string index, string query)
+        public Dictionary<string, string> GetLog(string index, string query, int extraRetryCount = 0)
         {
             var logData = new Dictionary<string, string>();
-            try
+            var retryCount = 0;
+            retryCount = retryCount - extraRetryCount;
+            while (retryCount <= 10)
             {
-                var esResponse = _esClient.Search<object>(s => s
-                            .AllTypes()
-                            .Index(index)
-                            .Size(10)
-                            .Query(
-                                q =>
-                                    q.DateRange(
-                                        x =>
-                                            x.GreaterThanOrEquals(DateMath.Anchored(DateTime.UtcNow.AddSeconds(-300)))
-                                                .LessThanOrEquals(DateMath.Anchored(DateTime.UtcNow))
-                                                .Field("log_time")) &&
-                                    q.QueryString(x => x.Query(query).AnalyzeWildcard()
-                                        )
-                            ));
-
-                if (esResponse.IsValid == true)
+                Thread.Sleep(30000);
+                try
                 {
-                    var hit = esResponse.Hits.ToList().First();
-                    List<JToken> tokens = ((JObject)hit.Source).Children().ToList();
-                    foreach (var token in tokens)
+                    var esResponse = _esClient.Search<object>(s => s
+                                .AllTypes()
+                                .Index(index)
+                                .Size(10)
+                                .Query(
+                                    q =>
+                                        q.DateRange(
+                                            x =>
+                                                x.GreaterThanOrEquals(DateMath.Anchored(DateTime.UtcNow.AddSeconds(-300)))
+                                                    .LessThanOrEquals(DateMath.Anchored(DateTime.UtcNow))
+                                                    .Field("log_time")) &&
+                                        q.QueryString(x => x.Query(query).AnalyzeWildcard()
+                                            )
+                                ));
+
+                    if (esResponse.IsValid == true)
                     {
-                        logData.Add(token.Path, token.Children().First().ToString());
+                        var hit = esResponse.Hits.ToList().First();
+                        List<JToken> tokens = ((JObject)hit.Source).Children().ToList();
+                        foreach (var token in tokens)
+                        {
+                            logData.Add(token.Path, token.Children().First().ToString());
+                        }
+                        break;
                     }
 
                 }
-
+                catch (Exception ex)
+                {
+                    //throw new Exception("Problem while reading from ES");
+                }
+                finally
+                {
+                    retryCount += 1;
+                }
             }
-            catch (Exception ex)
-            {
+            if (logData.Count == 0)
                 throw new Exception("Problem while reading from ES");
-            }
             return logData;
         }
     }

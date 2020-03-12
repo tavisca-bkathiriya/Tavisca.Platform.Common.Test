@@ -34,8 +34,10 @@ namespace Tavisca.Libraries.Tasks.Tests
             waitHandle.Wait();
 
             //Assert
-            Assert.Equal(4, threadId.Where(x => x == threadId.Min()).Count());
-            Assert.Equal(3, threadId.Where(x => x == threadId.Max()).Count());
+            var threadCounts = threadId.GroupBy(x => x).Select(x => x.Count()).OrderByDescending(x => x);
+            Assert.Equal(3, threadCounts.Count());
+            Assert.Equal(4, threadCounts.FirstOrDefault());
+            Assert.Equal(3, threadCounts.LastOrDefault());
         }
 
         private void getTask(Object lockObject, CountdownEvent waitHandle, List<int> threadId)
