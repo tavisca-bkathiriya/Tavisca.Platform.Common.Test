@@ -42,7 +42,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
             var logData = Utility.GetEsLogDataById(id);
             var esLogId = string.Empty;
             logData.TryGetValue("id", out esLogId);
-            Assert.Equal(id, esLogId);
+            Assert.Equal(id, esLogId);            
         }
 
         [Fact]
@@ -231,7 +231,7 @@ namespace Tavisca.Libraries.Logging.Tests.Logging
             Payload payloadValue = Utility.CreatePayload();
             apiLog.SetValue("payloadType", payloadValue);
 
-            IDictionary<string, string> dictionaryvalue = new Dictionary<string, string> { { "hi", "hello" } };
+            IDictionary<string, string> dictionaryvalue = new Dictionary<string, string> { {"hi", "hello" } };
             apiLog.SetValue("dictionaryType", dictionaryvalue);
 
             Map mapvalue = new Map(dictionaryvalue, MapFormat.Json);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -94,7 +94,7 @@ namespace Tavisca.Libraries.Tasks.Tests
                 threadIds.Add(Thread.CurrentThread.ManagedThreadId);
                 waitHandle.Signal();
             };
-
+            
             int poolSize = 2;
             lock (_lock)
             {
@@ -139,7 +139,7 @@ namespace Tavisca.Libraries.Tasks.Tests
             Assert.Equal(poolSize, threadIds.Distinct().Count());
         }
 
-
+        
         [Fact]
         public void Should_Be_Able_To_Configure_Roundrobin_Taskpool()
         {
@@ -235,9 +235,9 @@ namespace Tavisca.Libraries.Tasks.Tests
             AsyncTasks.RemoveAll();
 
             Assert.Equal(threadId1, threadId3);
-            Assert.Equal(threadId1, threadId5);
-            Assert.Equal(threadId2, threadId2);
+            Assert.Equal(threadId2, threadId4);
             Assert.NotEqual(threadId1, threadId2);
+            Assert.NotEqual(threadId1, threadId4);
         }
 
         [Fact]

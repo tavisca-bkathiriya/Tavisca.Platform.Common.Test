@@ -20,7 +20,7 @@ namespace Tavisca.Libraries.Logging.Tests.Filters
             var apiLog = Utility.GetApiLog();
             apiLog.Id = id;
 
-            List<TextMaskingRule> _rules = new List<TextMaskingRule>();
+             List<TextMaskingRule> _rules = new List<TextMaskingRule>();
             _rules.Add(new TextMaskingRule() { Field = "param1", Mask = Masks.MaskCompleteValue });
             _rules.Add(new TextMaskingRule() { Field = "param2", Mask = Masks.MaskCompleteValue });
             var queryStringMaskingRule = new QueryStringMaskingRule("url", _rules.ToArray());
@@ -80,13 +80,13 @@ namespace Tavisca.Libraries.Logging.Tests.Filters
         }
 
         [Fact]
-        public void Should_Mask_TextLog()
+        public void Should_Mask_TextLog ()
         {
             var id = Convert.ToString(Guid.NewGuid());
             var apiLog = Utility.GetApiLog();
             apiLog.Id = id;
 
-            var filter = new TextLogMaskingFilter(new TextMaskingRule() { Field = "txid", Mask = Masks.DefaultMask });
+            var filter = new TextLogMaskingFilter(new TextMaskingRule() { Field = "txid", Mask = Masks.DefaultMask});
             var maskedLog = filter.Apply(apiLog);
 
             var formatter = JsonLogFormatter.Instance;
